@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "durasi_detik": 420.4,
+    "tangan_tarik": "left"
+  },
+  "stats": {
+    "n": 2,
+    "form_avg": 59.967039658919106,
+    "form_best": 59.967039658919106,
+    "arrow_n": 0,
+    "arrow_total": 0,
+    "arrow_avg": null,
+    "group": null,
+    "bias": null,
+    "consistency": [],
+    "correlation": []
+  },
+  "shots": [
+    {
+      "no": 1,
+      "t_release": 66.5,
+      "form": null,
+      "notes": [],
+      "metrics": {
+        "follow": {
+          "follow_back": 0.7816251315687098,
+          "bow_drop": 0.34218146095693736
+        }
+      },
+      "arrow": null,
+      "arrow_status": "off",
+      "draw_time": 1.8010456562042236,
+      "aim_time": 0.31366515159606934,
+      "image": "shot_001.jpg",
+      "done": true
+    },
+    {
+      "no": 2,
+      "t_release": 230.18,
+      "form": 59.967039658919106,
+      "notes": [
+        "Siku tarikan terlalu rendah (-0.48 vs 0.05)",
+        "Bahu miring (16.40 vs 0.00)",
+        "Kepala miring (9.25 vs 0.00)"
+      ],
+      "metrics": {
+        "samping": {
+          "torso_side_lean": 1.9829564675077882,
+          "bow_wrist_height": 0.17008690608648006,
+          "head_tilt": 9.250281594131792,
+          "draw_elbow_height": -0.4789577335106976,
+          "D": 1.832384007527726,
+          "shoulder_tilt": 16.397181297024687
+        },
+        "follow": {
+          "follow_back": -0.9256028721347183,
+          "bow_drop": 0.22924626834860287
+        }
+      },
+      "arrow": null,
+      "arrow_status": "off",
+      "draw_time": 0.2442483901977539,
+      "aim_time": 6.371476411819458,
+      "image": "shot_002.jpg",
+      "done": true
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "durasi_detik": 64.7,
+    "tangan_tarik": "left"
+  },
+  "stats": {
+    "n": 1,
+    "form_avg": 0.0,
+    "form_best": 0.0,
+    "arrow_n": 0,
+    "arrow_total": 0,
+    "arrow_avg": null,
+    "group": null,
+    "bias": null,
+    "consistency": [],
+    "correlation": []
+  },
+  "shots": [
+    {
+      "no": 1,
+      "t_release": 47.98,
+      "form": 0.0,
+      "notes": [
+        "Badan condong ke samping (71.63 vs 0.00)",
+        "Siku tarikan terlalu rendah (-0.71 vs 0.05)",
+        "Bahu miring (86.03 vs 0.00)"
+      ],
+      "metrics": {
+        "samping": {
+          "bow_wrist_height": 0.8039207681037209,
+          "draw_elbow_height": -0.7097358989794171,
+          "D": 2.0573172017931256,
+          "shoulder_tilt": 86.02724244599816,
+          "torso_side_lean": 71.63227782358408
+        },
+        "follow": {
+          "follow_back": 2.6660267332169996,
+          "bow_drop": 5.031559594073696
+        }
+      },
+      "arrow": null,
+      "arrow_status": "off",
+      "draw_time": 0.2663777777777767,
+      "aim_time": 0.1997777777777756,
+      "image": "shot_001.jpg",
+      "done": true
+    }
+  ]
+}

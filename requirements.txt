@@ -1,0 +1,8 @@
+flask
+ultralytics
+opencv-python
+pyyaml
+numpy
+# MoveNet (default). Jika sulit dipasang: pose.backend = yolo_pose di config.yaml
+tensorflow
+tensorflow-hub

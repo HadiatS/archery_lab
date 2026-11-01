@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "durasi_detik": 142.7,
+    "tangan_tarik": "right"
+  },
+  "stats": {
+    "n": 2,
+    "form_avg": 96.73111199019874,
+    "form_best": 97.24605827565485,
+    "arrow_n": 0,
+    "arrow_total": 0,
+    "arrow_avg": null,
+    "group": null,
+    "bias": null,
+    "consistency": [],
+    "correlation": []
+  },
+  "shots": [
+    {
+      "no": 1,
+      "t_release": 32.68,
+      "form": 96.21616570474264,
+      "notes": [
+        "Kepala miring (13.45 vs 0.00)"
+      ],
+      "metrics": {
+        "samping": {
+          "shoulder_tilt": 7.487321655006383,
+          "head_tilt": 13.448721385170614,
+          "torso_side_lean": 0.5300472184829839,
+          "draw_elbow_height": -0.026360605426984852,
+          "D": 1.8433525805450388,
+          "bow_wrist_height": 0.07055233911978673
+        },
+        "follow": {
+          "follow_back": -0.8184233640773736,
+          "bow_drop": 0.549098458542188
+        }
+      },
+      "arrow": null,
+      "arrow_status": "off",
+      "draw_time": 1.5442416667938232,
+      "aim_time": 4.852903604507446,
+      "image": "shot_001.jpg",
+      "done": true
+    },
+    {
+      "no": 2,
+      "t_release": 116.81,
+      "form": 97.24605827565485,
+      "notes": [
+        "Kepala miring (10.53 vs 0.00)",
+        "Siku tarikan terlalu rendah (-0.11 vs 0.05)"
+      ],
+      "metrics": {
+        "samping": {
+          "shoulder_tilt": 1.2569601600424107,
+          "head_tilt": 10.533343283909545,
+          "torso_side_lean": 3.8630920685017234,
+          "draw_elbow_height": -0.10895207999467175,
+          "D": 2.5868145814945374,
+          "bow_wrist_height": 0.10189315563705333
+        },
+        "follow": {
+          "follow_back": -1.2184438585079163,
+          "bow_drop": -0.41942647189835675
+        }
+      },
+      "arrow": null,
+      "arrow_status": "off",
+      "draw_time": 0.7758216857910156,
+      "aim_time": 5.864498615264893,
+      "image": "shot_002.jpg",
+      "done": true
+    }
+  ]
+}

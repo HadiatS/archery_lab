@@ -1,0 +1,68 @@
+# Nilai bawaan. Pengaturan kamera/target/acuan diubah lewat GUI web (disimpan di data/settings.json).
+output_dir: data
+frame_skip: 1
+realtime_files: true       # file video diputar sesuai kecepatan asli
+
+cameras:
+  depan:   {mode: off, value: ""}   # tegak lurus garis tembak: melihat dada/depan pemanah
+  samping: {mode: off, value: ""}   # searah garis tembak: dari belakang pemanah / sisi target
+  target:  {mode: off, value: ""}   # menghadap papan sasaran (off = hanya analisis pose)
+usb: {width: 1280, height: 720}
+
+detector: {weights: yolo11s.pt, conf: 0.4, imgsz: 960, device: null, det_every: 5}
+pose:
+  backend: movenet         # movenet | yolo_pose
+  variant: thunder         # thunder (akurat) | lightning (cepat)
+  model_path: null
+  weights: yolo11n-pose.pt
+  smooth: 0.5
+archer_roi: {depan: null, samping: null}   # [x1,y1,x2,y2] relatif; pilih pemanah di jalur tertentu
+
+shooter:
+  handedness: right        # right | left | auto  (tangan yang menarik tali)
+  anchor: cheek            # cheek | ear | chin | chest | shoulder
+
+shot:                      # deteksi fase tembakan dari jarak dua pergelangan (satuan: panjang torso)
+  main_camera: depan
+  start_D: 1.2
+  full_D: 1.7
+  hold_min_sec: 0.15
+  min_aim_sec: 0.1
+  release_speed: 2.0
+  follow_sec: 0.8
+  max_hold_sec: 15
+
+target:
+  center: null             # diisi lewat GUI (kalibrasi)
+  radius: null
+  scoring: rings           # rings | hit_miss
+  rings: 10
+  zones: null              # opsional: [[0.1,10],[0.2,9],...] (radius relatif, skor)
+  diff_threshold: 28
+  min_area_frac: 0.0004
+  max_area_frac: 0.25
+  stable_sec: 0.5
+  motion_frac: 0.003
+  timeout_sec: 8
+  match: time              # time = cocokkan panah dengan waktu lepas | order = urutan (rekaman tak sinkron)
+
+# Acuan bentuk: [target, toleransi, bobot]. target null = pakai rata-rata tembakan pribadi (min. 3 tembakan).
+# Nilai awal = CONTOH; kalibrasi dengan pelatih atau tembakan acuan ("Jadikan acuan" di GUI).
+reference:
+  depan:
+    D:                    [null, 0.15, 1.5]
+    draw_elbow_angle:     [null, 20, 1.0]
+    bow_elbow_angle:      [175, 12, 1.0]
+    elbow_line_offset:    [0.0, 0.15, 1.5]
+    shoulder_arrow_angle: [0, 10, 1.0]
+    torso_lean:           [0, 8, 1.0]
+    anchor_dist:          [null, 0.12, 1.0]
+  samping:
+    draw_elbow_height:    [0.05, 0.15, 1.5]
+    bow_wrist_height:     [0.0, 0.2, 1.0]
+    head_tilt:            [0, 8, 0.5]
+    shoulder_tilt:        [0, 8, 0.5]
+    torso_side_lean:      [0, 8, 1.0]
+  follow:
+    follow_back:          [null, 0.15, 1.0]
+    bow_drop:             [null, 0.2, 1.0]

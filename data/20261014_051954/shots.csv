@@ -1,0 +1,3 @@
+no,waktu_lepas_s,durasi_tarik_s,durasi_tahan_s,form_score,skor_panah,jarak_pusat_rel,dx_rel,dy_rel,status_panah,catatan,follow.bow_drop,follow.follow_back,samping.D,samping.bow_wrist_height,samping.draw_elbow_height,samping.head_tilt,samping.shoulder_tilt,samping.torso_side_lean
+1,66.5,1.8,0.31,,,,,,off,,0.342,0.782,,,,,,
+2,230.18,0.24,6.37,60.0,,,,,off,Siku tarikan terlalu rendah (-0.48 vs 0.05) | Bahu miring (16.40 vs 0.00) | Kepala miring (9.25 vs 0.00),0.229,-0.926,1.832,0.17,-0.479,9.25,16.397,1.983

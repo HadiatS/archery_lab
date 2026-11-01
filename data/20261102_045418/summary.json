@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "durasi_detik": 31.5,
+    "tangan_tarik": "left"
+  },
+  "stats": {
+    "n": 0,
+    "form_avg": null,
+    "form_best": null,
+    "arrow_n": 0,
+    "arrow_total": 0,
+    "arrow_avg": null,
+    "group": null,
+    "bias": null,
+    "consistency": [],
+    "correlation": []
+  },
+  "shots": []
+}

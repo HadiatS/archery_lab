@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Archery Form Lab</title>
+<style>
+:root{--bg:#070b14;--ln:rgba(255,255,255,.09);--tx:#e8eefc;--mu:#8ea0c4;--a1:#5eead4;--a2:#fbbf24;--a3:#a78bfa;--ok:#34d399;--bad:#f87171;--r:18px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;width:560px;height:560px;border-radius:50%;filter:blur(140px);opacity:.28;z-index:-1;animation:fl 16s ease-in-out infinite alternate}
+body::before{background:#0ea5e9;top:-180px;left:-140px}
+body::after{background:#f59e0b;bottom:-200px;right:-140px;animation-delay:-8s}
+@keyframes fl{to{transform:translate(90px,70px)}}
+#app{display:flex;min-height:100vh}
+.nav{width:82px;flex:none;display:flex;flex-direction:column;gap:6px;padding:14px 8px;border-right:1px solid var(--ln);background:rgba(255,255,255,.025);position:sticky;top:0;height:100vh}
+.nav .lg{font-size:30px;text-align:center;margin:4px 0 12px;filter:drop-shadow(0 0 12px rgba(94,234,212,.6))}
+.nav button{background:none;border:0;color:var(--mu);border-radius:14px;padding:10px 4px;cursor:pointer;font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:.2s}
+.nav button i{font-style:normal;font-size:22px}
+.nav button:hover{background:rgba(255,255,255,.06);color:var(--tx)}
+.nav button.on{background:linear-gradient(135deg,rgba(94,234,212,.2),rgba(167,139,250,.2));color:#fff;box-shadow:inset 0 0 0 1px rgba(94,234,212,.35)}
+main{flex:1;min-width:0;padding:18px 22px 40px;max-width:1500px}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-size:22px;letter-spacing:2px;font-weight:800}
+h1 small{display:block;font-size:11px;color:var(--mu);letter-spacing:3px;font-weight:600;margin-top:2px}
+.sp{flex:1}
+.pill{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--ln);border-radius:999px;background:rgba(255,255,255,.04);font-size:13px;color:var(--mu)}
+.dot{width:9px;height:9px;border-radius:50%;background:#64748b}
+.dot.on{background:var(--ok);box-shadow:0 0 10px var(--ok)}.dot.warn{background:var(--a2);box-shadow:0 0 10px var(--a2);animation:pu 1s infinite}
+@keyframes pu{50%{opacity:.3}}
+button.b,select,input,textarea{font:inherit;color:var(--tx);background:rgba(255,255,255,.06);border:1px solid var(--ln);border-radius:12px;padding:9px 14px}
+select option{background:#0f172a}
+input::placeholder{color:#5b6b8c}
+button.b{cursor:pointer;transition:.2s}
+button.b:hover{border-color:rgba(255,255,255,.35);transform:translateY(-1px)}
+button.p{background:linear-gradient(135deg,#0ea5e9,#8b5cf6);border:0;font-weight:700}
+button.d{background:linear-gradient(135deg,#e11d48,#f97316);border:0;font-weight:700}
+button.b:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.card{position:relative;border:1px solid var(--ln);border-radius:var(--r);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));backdrop-filter:blur(10px);padding:16px}
+.card h3{font-size:12px;letter-spacing:2px;color:var(--mu);margin-bottom:12px;font-weight:700;display:flex;align-items:center;gap:8px}
+.tab{display:none}.tab.active{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.vid{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--ln);display:grid;place-items:center}
+.vid img{width:100%;height:100%;object-fit:contain;display:block}
+.vid .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--mu);font-size:13px;padding:10px;background:repeating-linear-gradient(45deg,#0b1220,#0b1220 14px,#0e1628 14px,#0e1628 28px)}
+.vid .ph b{display:block;font-size:30px;margin-bottom:6px}
+.tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:999px;font-size:11px;letter-spacing:1px;font-weight:700;backdrop-filter:blur(6px)}
+.steps{display:flex;gap:6px;margin:14px 0}
+.step{flex:1;text-align:center;padding:10px 4px;border-radius:12px;border:1px solid var(--ln);font-size:12px;letter-spacing:1px;color:var(--mu);transition:.3s}
+.step.on{color:#fff;background:linear-gradient(135deg,rgba(94,234,212,.3),rgba(167,139,250,.3));border-color:var(--a1);box-shadow:0 0 18px rgba(94,234,212,.3);font-weight:800}
+.last{display:grid;grid-template-columns:150px 150px 1fr 260px;gap:14px;align-items:center}
+.big{font-size:54px;font-weight:800;text-align:center;line-height:1}
+.big small{display:block;font-size:11px;letter-spacing:2px;color:var(--mu);font-weight:600;margin-top:8px}
+.notes{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.notes li{padding:8px 12px;border-radius:10px;background:rgba(251,191,36,.1);border-left:3px solid var(--a2)}
+.notes li.good{background:rgba(52,211,153,.1);border-color:var(--ok)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.stat b{font-size:30px;display:block;color:var(--a1)}.stat span{font-size:11px;letter-spacing:2px;color:var(--mu)}
+.res{display:grid;grid-template-columns:340px 1fr;gap:14px}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.sc{border:1px solid var(--ln);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.04);cursor:pointer;transition:.2s}
+.sc:hover{transform:translateY(-3px);border-color:var(--a1);box-shadow:0 8px 28px rgba(94,234,212,.15)}
+.sc img{width:100%;aspect-ratio:16/7;object-fit:cover;display:block;background:#000}
+.sc .in{padding:10px 12px;font-size:13px}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-weight:800;font-size:12px;margin-right:6px}
+.g{background:rgba(52,211,153,.18);color:var(--ok)}.y{background:rgba(251,191,36,.18);color:var(--a2)}.r{background:rgba(248,113,113,.18);color:var(--bad)}.n{background:rgba(148,163,184,.18);color:#cbd5e1}
+.cam{display:flex;flex-direction:column;gap:10px}
+.cam .row{display:flex;gap:8px;flex-wrap:wrap}.cam .row>*{flex:1;min-width:120px}
+.cam p{font-size:13px;color:var(--mu);line-height:1.5}
+.prev{border-radius:12px;max-width:100%;display:none;border:1px solid var(--ln)}
+.err{color:var(--bad);font-size:13px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.rrow{display:grid;grid-template-columns:90px 1fr;gap:6px 10px;align-items:center;padding:10px;border:1px solid var(--ln);border-radius:14px;background:rgba(255,255,255,.03)}
+.rrow input[type=file]{padding:6px;font-size:12px}.rrow .rs{grid-column:2;font-size:12px;color:var(--mu)}.rrow .ro{grid-column:2;font-size:12px;color:var(--mu)}
+.pg{height:14px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:6px 0}.pg i{display:block;height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6,#5eead4);border-radius:99px;transition:width .6s}
+.calwrap{position:relative;display:inline-block;max-width:100%;cursor:crosshair}
+.calwrap img{max-width:100%;display:block;border-radius:12px}
+.calwrap canvas{position:absolute;left:0;top:0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:6px 8px;text-align:left;border-bottom:1px solid var(--ln)}th{color:var(--mu);font-size:11px;letter-spacing:2px}
+td input{width:100%;padding:6px 8px}
+.hist a{color:var(--a1);text-decoration:none}.hist .it{display:flex;gap:16px;align-items:center;padding:12px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+#toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:90}
+.toast{padding:12px 16px;border-radius:12px;background:rgba(15,23,42,.95);border:1px solid var(--ln);box-shadow:0 10px 30px rgba(0,0,0,.4);animation:in .3s;max-width:340px;font-size:14px}
+.toast.error{border-color:var(--bad)}.toast.ok{border-color:var(--ok)}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;place-items:center;z-index:80;padding:16px;overflow:auto}
+#modal .box{max-width:1100px;width:100%;background:#0d1426;border:1px solid var(--ln);border-radius:20px;padding:18px;max-height:94vh;overflow:auto}
+#modal img{width:100%;border-radius:12px}
+.mrow{display:grid;grid-template-columns:230px 1fr 150px;gap:10px;align-items:center;padding:5px 0;font-size:13px}
+.track{position:relative;height:8px;border-radius:9px;background:rgba(255,255,255,.08)}
+.band{position:absolute;top:0;height:100%;background:rgba(52,211,153,.35);border-radius:9px}
+.mk{position:absolute;top:-4px;width:6px;height:16px;border-radius:4px;transform:translateX(-50%)}
+.mk.ok{background:var(--ok)}.mk.bad{background:var(--bad)}
+.mv small{color:var(--mu)}
+.manual{display:grid;grid-template-columns:260px 1fr;gap:16px;align-items:start}
+.manual #mplot svg{cursor:crosshair;border-radius:50%}
+.mbtn{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.mbtn button{min-width:46px;font-weight:800}
+pre.code{background:#0b1220;border:1px solid var(--ln);border-radius:10px;padding:10px;overflow:auto;font-size:12px;color:#a5f3fc;margin-top:8px}
+details summary{cursor:pointer;color:var(--a1);margin-top:6px;font-size:13px}
+@media(max-width:1100px){.last{grid-template-columns:130px 130px 1fr}.last .plotc{grid-column:1/-1}.res{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}}
+@media(max-width:760px){.manual{grid-template-columns:1fr}#app{flex-direction:column-reverse}.nav{width:100%;height:auto;flex-direction:row;position:sticky;bottom:0;top:auto;border-right:0;border-top:1px solid var(--ln);justify-content:space-around;padding:6px;background:rgba(7,11,20,.92);backdrop-filter:blur(10px)}.nav .lg{display:none}main{padding:14px}.mrow{grid-template-columns:1fr}.last{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div id="app">
+<nav class="nav">
+  <div class="lg">🏹</div>
+  <button data-tab="live" class="on"><i>🎥</i>Live</button>
+  <button data-tab="hasil"><i>📊</i>Hasil</button>
+  <button data-tab="kamera"><i>📷</i>Kamera</button>
+  <button data-tab="rekaman"><i>📼</i>Rekaman</button>
+  <button data-tab="target"><i>🎯</i>Target</button>
+  <button data-tab="acuan"><i>📐</i>Acuan</button>
+  <button data-tab="riwayat"><i>🗂️</i>Riwayat</button>
+</nav>
+<main>
+<header>
+  <h1>ARCHERY FORM LAB<small>PANAHAN TRADISIONAL · YOLO + MOVENET</small></h1>
+  <div class="sp"></div>
+  <div class="pill"><i class="dot" id="conn"></i><span id="engtxt">Menghubungkan…</span></div>
+  <button class="b p" id="startbtn">▶ Mulai sesi</button>
+</header>
+
+<!-- LIVE -->
+<section class="tab active" id="tab-live">
+  <div class="grid3" id="vids"></div>
+  <div class="steps" id="steps"></div>
+  <div class="card">
+    <h3>🏹 TEMBAKAN TERAKHIR <span id="dval" style="margin-left:auto;font-weight:600"></span></h3>
+    <div class="last" id="lastshot"><div class="notes"><li>Belum ada tembakan. Tekan <b>Mulai sesi</b> lalu menembak.</li></div></div>
+    <div class="acts">
+      <button class="b" id="aref">⭐ Jadikan acuan</button>
+      <button class="b" id="around">🔄 Ronde baru</button>
+      <button class="b" id="acap">📸 Capture</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>✍️ SKOR MANUAL / SENSOR EKSTERNAL <span style="margin-left:auto;font-weight:500;letter-spacing:0;color:var(--mu)" id="msrc"></span></h3>
+    <div class="manual">
+      <div id="mplot"></div>
+      <div class="cam">
+        <label style="font-size:13px;color:var(--mu)">Untuk tembakan <select id="mshot"></select></label>
+        <div class="mbtn" id="mbtns"></div>
+        <p>Klik posisi anak panah pada gambar target, atau tekan tombol skor. Sumber skor lain (e-target, sensor suara/getar, skrip) bisa mengirim lewat HTTP:</p>
+        <details><summary>🔌 Hubungkan sensor / e-target (API)</summary>
+<pre class="code">curl -X POST http://IP-PC:8080/api/score -H "Content-Type: application/json" -d '{"score": 9}'
+curl -X POST http://IP-PC:8080/api/score -H "Content-Type: application/json" -d '{"x": 0.12, "y": -0.30}'
+
+# x,y = posisi relatif radius target (x kanan +, y bawah +); skor dihitung otomatis
+# opsional: "shot": 3 (nomor tembakan), "source": "e-target"
+# Python:  requests.post("http://IP-PC:8080/api/score", json={"score": 10})</pre></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HASIL -->
+<section class="tab" id="tab-hasil">
+  <div class="stats" id="stats"></div>
+  <div class="res">
+    <div class="card"><h3>🎯 SEBARAN ANAK PANAH</h3><div id="plot" style="display:grid;place-items:center"></div><p id="biasnote" style="text-align:center;color:var(--mu);font-size:13px;margin-top:8px"></p></div>
+    <div class="card"><h3>🗒️ DAFTAR TEMBAKAN</h3><div class="shots" id="shots"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>🔎 KONSISTENSI &amp; TEMUAN</h3><div id="insights" style="font-size:14px;line-height:1.7;color:var(--mu)">Belum cukup data.</div></div>
+</section>
+
+<!-- KAMERA -->
+<section class="tab" id="tab-kamera">
+  <div class="two" id="camforms"></div>
+  <div class="two" style="margin-top:14px">
+    <div class="card"><h3>🧍 PEMANAH</h3>
+      <div class="cam">
+        <label>Tangan penarik tali<select id="f_hand"><option value="right">Kanan (busur di tangan kiri)</option><option value="left">Kiri (busur di tangan kanan)</option><option value="auto">Otomatis</option></select></label>
+        <label>Titik anchor<select id="f_anchor"><option value="cheek">Pipi</option><option value="ear">Telinga</option><option value="chin">Dagu</option><option value="chest">Dada</option><option value="shoulder">Bahu</option></select></label>
+        <p>Panahan tradisional: pilih titik anchor sesuai gaya Anda (mis. telinga/pipi untuk thumb draw, dada untuk gaya duduk).</p>
+      </div></div>
+    <div class="card"><h3>💾 SIMPAN</h3><div class="cam"><p>Perubahan kamera berlaku saat sesi dimulai. Pengaturan tangan &amp; anchor langsung berlaku.</p><button class="b p" id="savecam">Simpan pengaturan</button></div></div>
+  </div>
+</section>
+
+<!-- TARGET -->
+<section class="tab" id="tab-target">
+  <div class="two">
+    <div class="card"><h3>🎯 KALIBRASI TARGET</h3>
+      <p style="color:var(--mu);font-size:13px;margin-bottom:10px">1) Ambil gambar dari kamera target &nbsp;2) Klik <b>pusat</b> target &nbsp;3) Klik <b>tepi luar</b> target &nbsp;4) Simpan.</p>
+      <div class="acts" style="margin:0 0 12px"><button class="b" id="grab">📷 Ambil gambar target</button><button class="b" id="calreset">Ulangi klik</button></div>
+      <div class="calwrap" id="calwrap" style="display:none"><img id="calimg" alt=""><canvas id="calcv"></canvas></div>
+      <div class="err" id="calerr"></div>
+    </div>
+    <div class="card"><h3>⚙️ PENILAIAN</h3>
+      <div class="cam">
+        <label>Sumber skor anak panah<select id="f_source"><option value="camera">Kamera target (foto otomatis)</option><option value="manual">Manual / sensor eksternal (tanpa deteksi kamera)</option></select></label>
+        <label>Jenis penilaian<select id="f_scoring"><option value="rings">Cincin (skor sesuai ring)</option><option value="hit_miss">Kena / meleset (mis. bandul)</option></select></label>
+        <label>Jumlah cincin<input type="number" id="f_rings" min="1" max="12" value="10"></label>
+        <p id="calinfo">Belum dikalibrasi.</p>
+        <button class="b p" id="calsave" disabled>Simpan kalibrasi</button>
+        <p>Deteksi anak panah memakai perbandingan gambar saat target diam. Kamera target harus tetap (tidak bergeser).</p>
+      </div></div>
+  </div>
+</section>
+
+<!-- ACUAN -->
+<section class="tab" id="tab-acuan">
+  <div class="card"><h3>📐 ACUAN BENTUK (target ± toleransi)</h3>
+    <p style="color:var(--mu);font-size:13px;margin-bottom:10px">Kosongkan <b>Target</b> untuk memakai rata-rata tembakan pribadi Anda (setelah 3 tembakan). Nilai awal adalah <b>contoh</b>; sesuaikan dengan pelatih atau pakai tombol “Jadikan acuan” pada tembakan terbaik.</p>
+    <div id="reftable"></div>
+    <div class="acts"><button class="b p" id="refsave">Simpan acuan</button><button class="b" id="refclear">Hapus acuan tembakan</button><span id="refstat" style="color:var(--mu);align-self:center;font-size:13px"></span></div>
+  </div>
+</section>
+
+<!-- RIWAYAT -->
+<section class="tab" id="tab-rekaman">
+ <div class="two">
+  <div class="card"><h3>📼 ANALISA REKAMAN VIDEO</h3><div class="cam">
+   <p>Analisa video yang sudah direkam (kamera olahraga, HP, atau hasil export NVR/DVR) tanpa menunggu real-time. Unggah dari browser, atau ketik lokasi file di PC ini.</p>
+   <label>Jenis analisa<select id="r_mode"><option value="both">Pose + skor panah</option><option value="pose">Pose saja (bentuk)</option><option value="score">Skor saja (hanya rekaman target)</option></select></label>
+   <div id="r_rows" style="display:flex;flex-direction:column;gap:10px"></div>
+   <label>Pencocokan skor panah dengan tembakan<select id="r_match"><option value="order">Urutan (disarankan untuk rekaman)</option><option value="time">Waktu (rekaman sudah sinkron)</option></select></label>
+   <label>Kecepatan analisa<select id="r_skip"><option value="1">Teliti (semua frame)</option><option value="2" selected>Cepat (1 dari 2 frame)</option><option value="3">Sangat cepat (1 dari 3 frame)</option></select></label>
+   <label><input type="checkbox" id="r_rt" style="width:auto;margin-right:6px">Putar sesuai kecepatan asli (untuk menonton prosesnya)</label>
+   <button class="b p" id="r_go">▶ Analisa rekaman</button>
+  </div></div>
+  <div class="card"><h3>⏳ PROGRES</h3><div class="cam">
+   <div class="pg"><i id="r_bar"></i></div><div id="r_txt" style="font-size:14px">Belum ada analisa rekaman.</div>
+   <div class="row"><button class="b" id="r_live">🎥 Tonton prosesnya</button><button class="b" id="r_view">📊 Lihat hasil</button></div>
+   <p><b>Tips:</b> mode “Urutan” mencocokkan panah ke-1 dengan tembakan ke-1 dan seterusnya, jadi tiga rekaman tidak harus mulai bersamaan. Jika rekaman sudah sinkron, pilih “Waktu” dan isi offset. Hasil muncul di tab <b>Hasil</b> dan <b>Riwayat</b>.</p>
+   <p><b>NVR/DVR:</b> untuk kamera langsung dari NVR, pakai tab Kamera → RTSP (mis. Hikvision <code>rtsp://user:pass@IP:554/Streaming/Channels/101</code>, Dahua <code>rtsp://user:pass@IP:554/cam/realmonitor?channel=1&amp;subtype=0</code>). Rekaman lama: export dari NVR sebagai file lalu unggah di sini.</p>
+  </div></div>
+ </div>
+</section>
+
+<section class="tab" id="tab-riwayat"><div class="card hist"><h3>🗂️ RIWAYAT SESI</h3><div id="hist">Memuat…</div></div></section>
+</main>
+</div>
+<div id="toasts"></div>
+<div id="modal"><div class="box" id="mbox"></div></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CAMS={
+ depan:{t:'Kamera Depan',i:'🧍',d:'Tegak lurus garis tembak, melihat dada/depan pemanah: sudut siku tarikan, panjang tarikan, garis bahu, anchor.'},
+ samping:{t:'Kamera Samping',i:'↔️',d:'Searah garis tembak (dari belakang pemanah atau sisi target): tinggi siku, bahu, kepala, condong badan.'},
+ target:{t:'Kamera Target',i:'🎯',d:'Menghadap papan sasaran untuk skor anak panah. Pilih “Tidak dipakai” bila hanya ingin melihat pose.'}};
+const PH={usb:'Nomor kamera, mis. 0',wifi:'IP:port, mis. 192.168.1.50:8080',rtsp:'rtsp://user:pass@ip:554/stream1',file:'Lokasi file video, mis. C:\\video\\depan.mp4',off:'—'};
+let S=null,formsReady=false,shotsKey='',calPts=[],calNat=null;
+async function api(p,body){const o={};if(body!==undefined){o.method='POST';o.headers={'Content-Type':'application/json'};o.body=JSON.stringify(body)}const r=await fetch(p,o);return r.json()}
+function toast(m,k){const d=document.createElement('div');d.className='toast '+(k||'');d.innerHTML=m;$('#toasts').appendChild(d);setTimeout(()=>d.remove(),4800)}
+
+/* ---------- tab ---------- */
+$$('.nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function showTab(t){$$('.tab').forEach(x=>x.classList.toggle('active',x.id==='tab-'+t));$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));if(t==='riwayat')loadHist();if(t==='hasil')shotsKey=''}
+
+/* ---------- komponen ---------- */
+function gauge(score,size,label){const C=2*Math.PI*52,v=score==null?0:Math.max(0,Math.min(100,score));const col=score==null?'#64748b':score>=80?'#34d399':score>=60?'#fbbf24':'#f87171';
+ return `<svg viewBox="0 0 120 120" width="${size}" height="${size}"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/><circle cx="60" cy="60" r="52" fill="none" stroke="${col}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-v/100)}" transform="rotate(-90 60 60)" style="filter:drop-shadow(0 0 6px ${col})"/><text x="60" y="66" text-anchor="middle" font-size="30" font-weight="800" fill="#fff">${score==null?'–':Math.round(score)}</text><text x="60" y="86" text-anchor="middle" font-size="10" letter-spacing="2" fill="#94a3b8">${label}</text></svg>`}
+function targetPlot(arrows,rings,scoring,group,size){
+ const n=scoring==='hit_miss'?1:Math.max(1,rings||10),cols=['#e5e7eb','#1f2937','#2563eb','#dc2626','#fbbf24'];
+ let s=`<svg viewBox="-112 -112 224 224" width="${size}" height="${size}">`;
+ for(let k=n;k>=1;k--){const c=cols[Math.min(4,Math.floor((n-k)/(n/5)))];s+=`<circle r="${100*k/n}" fill="${c}" stroke="rgba(0,0,0,.35)" stroke-width=".6"/>`}
+ s+=`<path d="M-4 0H4M0 -4V4" stroke="#000" stroke-width=".8"/>`;
+ if(group&&arrows.length>1){const gx=group.cx*100,gy=group.cy*100;s+=`<circle cx="${gx}" cy="${gy}" r="${Math.max(group.r*100,3)}" fill="rgba(34,211,238,.15)" stroke="#22d3ee" stroke-dasharray="3 2" stroke-width="1"/>`}
+ arrows.forEach(a=>{const x=Math.max(-108,Math.min(108,a.dx_rel*100)),y=Math.max(-108,Math.min(108,a.dy_rel*100));s+=`<circle cx="${x}" cy="${y}" r="4" fill="#22d3ee" stroke="#fff" stroke-width="1.2"/><text x="${x}" y="${y-6}" text-anchor="middle" font-size="8" font-weight="700" fill="#fff" stroke="#000" stroke-width=".5" paint-order="stroke">${a.shot_no||''}</text>`});
+ return s+'</svg>'}
+const fcls=f=>f==null?'n':f>=80?'g':f>=60?'y':'r';
+function fmt(x,n){return x==null?'–':Number(x).toFixed(n==null?0:n)}
+
+/* ---------- render ---------- */
+function render(){
+ if(!S)return;
+ const e=S.engine,run=e.state==='running',busy=e.state==='loading'||e.state==='stopping';
+ $('#conn').className='dot '+(run?'on':busy?'warn':'');
+ $('#engtxt').textContent={idle:'Siap',loading:'Memuat model…',running:'Sesi berjalan',stopping:'Menyimpan laporan…'}[e.state]||e.state;
+ const sb=$('#startbtn');sb.disabled=busy;sb.textContent=run?(S.offline?'■ Hentikan analisa':'■ Hentikan sesi'):'▶ Mulai sesi';
+ {const pr=S.progress,pc=S.offline&&pr?pr.pct:0;$('#r_bar').style.width=pc+'%';
+  $('#r_txt').textContent=!S.offline?'Belum ada analisa rekaman.':run?`Menganalisa… ${pc}%${pr?` (video ${pr.t}/${pr.total} dtk${pr.eta?`, sisa ±${pr.eta} dtk`:''})`:''}`:e.state==='stopping'?'Menyimpan laporan…':(pc>=100?'Selesai ✔ — hasil ada di tab Hasil & Riwayat':'Siap')}sb.className='b '+(run?'d':'p');
+ // video
+ const v=$('#vids');if(!v.children.length)Object.keys(CAMS).forEach(c=>{v.insertAdjacentHTML('beforeend',`<div class="card" style="padding:10px"><div class="vid" id="v_${c}"><img alt="" style="display:none"><div class="ph"><div><b>${CAMS[c].i}</b><span></span></div></div><span class="tag">${CAMS[c].t.toUpperCase()}</span></div></div>`)});
+ Object.keys(CAMS).forEach(c=>{const box=$('#v_'+c),img=box.querySelector('img'),ph=box.querySelector('.ph'),act=(e.active||[]).includes(c)&&run,off=(S.cameras[c]||{}).mode==='off';
+  if(act){if(img.dataset.on!=='1'){img.src='/video/'+c+'?t='+Date.now();img.dataset.on='1'}img.style.display='block';ph.style.display='none'}
+  else{img.style.display='none';img.dataset.on='0';ph.style.display='grid';ph.querySelector('span').textContent=off?'Tidak dipakai':(run?'Menunggu gambar…':'Belum berjalan')}});
+ // fase
+ const ph=S.session?S.session.phase:null,names=[['IDLE','SIAP'],['DRAW','MENARIK'],['HOLD','TAHAN'],['FOLLOW','LEPAS']];
+ $('#steps').innerHTML=names.map(([k,l])=>`<div class="step ${run&&ph===k?'on':''}">${l}</div>`).join('');
+ $('#dval').textContent=run&&S.session&&S.session.D!=null?`D = ${S.session.D.toFixed(2)} · tangan: ${S.session.hand==='left'?'kiri':'kanan'}`:'';
+ // tembakan terakhir
+ const shots=S.shots||[],last=shots[shots.length-1];
+ const arrowsAll=shots.filter(s=>s.arrow).map(s=>s.arrow),st=S.session?S.session.stats:null;
+ if(last){const a=last.arrow,as=last.arrow_status;
+  $('#lastshot').innerHTML=`<div>${gauge(last.form,140,'FORM')}</div><div class="big">${a?a.score:(as==='pending'?'…':'–')}<small>SKOR PANAH${as==='tidak_terdeteksi'?' · TIDAK TERDETEKSI':''}</small></div>
+  <ul class="notes">${last.notes.length?last.notes.map(n=>`<li>${esc(n)}</li>`).join(''):`<li class="good">${last.form==null?'Menunggu analisis…':'Bentuk sesuai acuan 👍'}</li>`}</ul>
+  <div class="plotc">${targetPlot(arrowsAll,S.target.rings,S.target.scoring,st&&st.group,230)}</div>`}
+ renderManual(shots);
+ // hasil
+ const key=JSON.stringify(shots.map(s=>[s.no,s.form,s.done,s.arrow&&s.arrow.score,s.arrow_status]));
+ if(key!==shotsKey){shotsKey=key;renderResults(shots,st)}
+ $('#refstat').textContent=S.has_reference?'✔ Acuan dari tembakan tersimpan':'';
+}
+function renderResults(shots,st){
+ st=st||{};
+ const cards=[['TEMBAKAN',st.n||0],['FORM RATA-RATA',fmt(st.form_avg)],['FORM TERBAIK',fmt(st.form_best)],['SKOR PANAH',st.arrow_n?st.arrow_total:'–'],['RATA-RATA PANAH',st.arrow_avg!=null?fmt(st.arrow_avg,1):'–'],['UKURAN GRUP',st.group?fmt(st.group.r,2):'–']];
+ $('#stats').innerHTML=cards.map(([l,v])=>`<div class="card stat"><b>${v}</b><span>${l}</span></div>`).join('');
+ $('#plot').innerHTML=targetPlot(shots.filter(s=>s.arrow).map(s=>s.arrow),S.target.rings,S.target.scoring,st.group,300);
+ $('#biasnote').textContent=st.bias?`Kecenderungan grup: ${st.bias}`:'';
+ $('#shots').innerHTML=shots.slice().reverse().map(s=>{const a=s.arrow;return `<div class="sc" onclick="openShot(${s.no})">${s.image?`<img loading="lazy" src="/shots/${esc(s.image)}?v=${s.done?1:0}">`:'<div style="aspect-ratio:16/7;display:grid;place-items:center;color:var(--mu)">memproses…</div>'}
+  <div class="in"><span class="badge ${fcls(s.form)}">Form ${fmt(s.form)}</span><span class="badge ${a?'g':'n'}">Panah ${a?a.score:(s.arrow_status==='pending'?'…':'–')}</span><div style="color:var(--mu);margin-top:6px">#${s.no}${s.notes[0]?' · '+esc(s.notes[0].split(' (')[0]):''}</div></div></div>`}).join('')||'<p style="color:var(--mu)">Belum ada tembakan.</p>';
+ let ins=[];
+ (st.consistency||[]).forEach(c=>{if(c.ratio>0.5)ins.push(`⚠️ <b>${esc(c.label)}</b> kurang konsisten (simpangan ${c.ratio.toFixed(1)}× toleransi)`)});
+ (st.correlation||[]).forEach(c=>ins.push(`📈 <b>${esc(c.label)}</b> berkaitan dengan jarak dari pusat (r=${c.r.toFixed(2)}) — korelasi bukan bukti sebab-akibat`));
+ $('#insights').innerHTML=ins.length?ins.join('<br>'):'Belum cukup data (butuh ≥3 tembakan untuk konsistensi, ≥8 untuk korelasi).';
+}
+window.openShot=function(no){const s=(S.shots||[]).find(x=>x.no===no);if(!s)return;
+ const groups={};(s.details||[]).forEach(d=>{(groups[d.view]=groups[d.view]||[]).push(d)});
+ const vt={depan:'Kamera depan',samping:'Kamera samping',follow:'Setelah lepas'};
+ let h=`<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px"><h2>Tembakan #${s.no}</h2><span class="badge ${fcls(s.form)}">Form ${fmt(s.form)}/100</span><span class="badge ${s.arrow?'g':'n'}">Panah ${s.arrow?s.arrow.score:'–'}</span><div class="sp"></div><button class="b" onclick="closeModal()">Tutup ✕</button></div>`;
+ if(s.image)h+=`<img src="/shots/${esc(s.image)}">`;
+ h+=`<p style="margin:10px 0;color:var(--mu);font-size:13px">Tarik ${fmt(s.draw_time,1)} dtk · tahan ${fmt(s.aim_time,1)} dtk</p>`;
+ Object.keys(groups).forEach(g=>{h+=`<h3 style="margin:12px 0 4px;color:var(--a1);font-size:12px;letter-spacing:2px">${(vt[g]||g).toUpperCase()}</h3>`;
+  groups[g].forEach(d=>{const lo=d.target-3*d.tol,hi=d.target+3*d.tol,pos=Math.max(0,Math.min(1,(d.value-lo)/(hi-lo))),ok=Math.abs(d.dev)<=d.tol;
+   h+=`<div class="mrow"><div>${esc(d.label)}</div><div class="track"><i class="band" style="left:33.3%;width:33.4%"></i><i class="mk ${ok?'ok':'bad'}" style="left:${pos*100}%"></i></div><div class="mv">${d.value.toFixed(2)} <small>(${d.target.toFixed(2)} ± ${d.tol})</small></div></div>`})});
+ if(s.notes.length)h+=`<ul class="notes" style="margin-top:12px">${s.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`;
+ $('#mbox').innerHTML=h;$('#modal').style.display='grid'};
+window.closeModal=()=>$('#modal').style.display='none';
+$('#modal').onclick=e=>{if(e.target.id==='modal')closeModal()};
+
+/* ---------- start/stop & aksi ---------- */
+$('#startbtn').onclick=async()=>{const run=S&&S.engine.state==='running';const r=await api(run?'/api/session/stop':'/api/session/start',{});if(r.ok===false)toast(esc(r.error),'error');setTimeout(poll,400)};
+async function act(n){const r=await api('/api/action/'+n,{});if(r.ok===false)toast(esc(r.error),'error');else setTimeout(poll,300)}
+$('#aref').onclick=()=>act('reference');$('#around').onclick=()=>act('newround');$('#acap').onclick=()=>act('capture');
+
+/* ---------- form kamera ---------- */
+function buildForms(){
+ $('#camforms').innerHTML=Object.keys(CAMS).map(c=>`<div class="card"><h3>${CAMS[c].i} ${CAMS[c].t.toUpperCase()}</h3><div class="cam"><p>${CAMS[c].d}</p>
+  <div class="row"><select id="m_${c}"><option value="off">Tidak dipakai</option><option value="usb">USB camera</option><option value="wifi">WiFi camera (HTTP/MJPEG)</option><option value="rtsp">RTSP camera</option><option value="file">File video</option></select>
+  <input id="v_in_${c}" placeholder=""></div>
+  <div class="row"><button class="b" data-usb="${c}">🔍 Cari USB</button><button class="b" data-test="${c}">🧪 Uji koneksi</button></div>
+  <div class="err" id="e_${c}"></div><img class="prev" id="p_${c}" alt=""></div></div>`).join('');
+ Object.keys(CAMS).forEach(c=>{const m=$('#m_'+c);m.onchange=()=>upd(c);
+  $(`[data-usb="${c}"]`).onclick=async()=>{const r=await api('/api/usb');const l=r.cameras;$('#e_'+c).style.color='var(--mu)';$('#e_'+c).textContent=l.length?('Kamera USB terdeteksi (nomor): '+l.join(', ')):'Tidak ada kamera USB terdeteksi.';if(l.length){m.value='usb';$('#v_in_'+c).value=l[0];upd(c,true)}};
+  $(`[data-test="${c}"]`).onclick=()=>testCam(c)});
+}
+function upd(c,keep){const m=$('#m_'+c).value,i=$('#v_in_'+c);i.placeholder=PH[m];i.disabled=m==='off';if(!keep&&m==='off')i.value=''}
+async function testCam(c){const e=$('#e_'+c),p=$('#p_'+c);e.style.color='var(--mu)';e.textContent='Menguji koneksi…';p.style.display='none';
+ const r=await api('/api/probe',{cam:c,mode:$('#m_'+c).value,value:$('#v_in_'+c).value});
+ if(r.ok){e.style.color='var(--ok)';e.textContent=`Terhubung (${r.w}×${r.h})`;p.src=r.image;p.style.display='block'}else{e.style.color='var(--bad)';e.textContent=r.error}}
+function fillForms(){
+ Object.keys(CAMS).forEach(c=>{const cf=S.cameras[c]||{mode:'off',value:''};$('#m_'+c).value=cf.mode||'off';$('#v_in_'+c).value=cf.value||'';upd(c,true)});
+ $('#f_hand').value=S.shooter.handedness;$('#f_anchor').value=S.shooter.anchor;
+ $('#f_source').value=S.target.source||'camera';$('#f_scoring').value=S.target.scoring;$('#f_rings').value=S.target.rings;
+ $('#calinfo').textContent=S.target.calibrated?`Tersimpan: pusat (${Math.round(S.target.center[0])}, ${Math.round(S.target.center[1])}), radius ${Math.round(S.target.radius)} px`:'Belum dikalibrasi.';
+ buildRef();formsReady=true}
+$('#savecam').onclick=async()=>{const cams={};Object.keys(CAMS).forEach(c=>cams[c]={mode:$('#m_'+c).value,value:$('#v_in_'+c).value.trim()});
+ const r=await api('/api/settings',{cameras:cams,shooter:{handedness:$('#f_hand').value,anchor:$('#f_anchor').value}});toast(r.ok?'Pengaturan tersimpan ✔':'Gagal menyimpan',r.ok?'ok':'error')};
+
+/* ---------- kalibrasi target ---------- */
+$('#grab').onclick=async()=>{$('#calerr').textContent='Mengambil gambar…';const r=await api('/api/probe',{cam:'target',mode:$('#m_target').value,value:$('#v_in_target').value});
+ if(!r.ok){$('#calerr').textContent=r.error+' — atur kamera Target di tab Kamera dulu.';return}
+ $('#calerr').textContent='';calNat={w:r.w,h:r.h};calPts=[];const im=$('#calimg');im.onload=()=>{sizeCv();drawCal()};im.src=r.image;$('#calwrap').style.display='inline-block'};
+function sizeCv(){const im=$('#calimg'),cv=$('#calcv');cv.width=im.clientWidth;cv.height=im.clientHeight}
+window.addEventListener('resize',()=>{if(calNat){sizeCv();drawCal()}});
+$('#calcv').onclick=e=>{if(!calNat)return;const cv=$('#calcv'),x=e.offsetX/cv.width*calNat.w,y=e.offsetY/cv.height*calNat.h;if(calPts.length>=2)calPts=[];calPts.push([x,y]);drawCal()};
+$('#calreset').onclick=()=>{calPts=[];drawCal()};
+function drawCal(){const cv=$('#calcv'),c=cv.getContext('2d');c.clearRect(0,0,cv.width,cv.height);if(!calNat)return;const k=cv.width/calNat.w;
+ if(calPts.length>=1){const [x,y]=calPts[0];c.strokeStyle='#22d3ee';c.lineWidth=2;c.beginPath();c.moveTo(x*k-10,y*k);c.lineTo(x*k+10,y*k);c.moveTo(x*k,y*k-10);c.lineTo(x*k,y*k+10);c.stroke()}
+ if(calPts.length===2){const r=Math.hypot(calPts[1][0]-calPts[0][0],calPts[1][1]-calPts[0][1]),n=$('#f_scoring').value==='hit_miss'?1:(+$('#f_rings').value||10);
+  for(let i=1;i<=n;i++){c.strokeStyle=i===n?'#fbbf24':'rgba(251,191,36,.5)';c.beginPath();c.arc(calPts[0][0]*k,calPts[0][1]*k,r*k*i/n,0,7);c.stroke()}}
+ $('#calsave').disabled=calPts.length<2}
+['f_scoring','f_rings'].forEach(i=>$('#'+i).addEventListener('input',drawCal));
+$('#calsave').onclick=async()=>{const r=Math.hypot(calPts[1][0]-calPts[0][0],calPts[1][1]-calPts[0][1]);
+ const j=await api('/api/calibrate',{center:calPts[0],radius:r,scoring:$('#f_scoring').value,rings:+$('#f_rings').value||10});
+ if(j.ok){toast('Kalibrasi target tersimpan ✔','ok');formsReady=false;poll()}};
+
+/* ---------- acuan ---------- */
+const VT={depan:'Kamera depan',samping:'Kamera samping',follow:'Setelah lepas'};
+const LBL={D:'Panjang tarikan (rasio)',draw_elbow_angle:'Sudut siku tarikan (°)',bow_elbow_angle:'Sudut siku lengan busur (°)',elbow_line_offset:'Tinggi siku vs garis anak panah',shoulder_arrow_angle:'Selisih garis bahu–anak panah (°)',torso_lean:'Condong badan ke target (°)',anchor_dist:'Jarak tangan ke anchor',draw_elbow_height:'Tinggi siku vs bahu',bow_wrist_height:'Tinggi lengan busur vs bahu',head_tilt:'Kemiringan kepala (°)',shoulder_tilt:'Kemiringan bahu (°)',torso_side_lean:'Condong badan ke samping (°)',follow_back:'Lanjutan tangan tarikan ke belakang',bow_drop:'Turunnya lengan busur setelah lepas'};
+function buildRef(){let h='<table><tr><th>METRIK</th><th>TARGET</th><th>TOLERANSI ±</th><th>BOBOT</th></tr>';
+ Object.keys(S.reference).forEach(v=>{h+=`<tr><td colspan="4" style="color:var(--a1);font-size:12px;letter-spacing:2px;padding-top:14px">${VT[v]||v}</td></tr>`;
+  Object.entries(S.reference[v]).forEach(([k,sp])=>{h+=`<tr><td>${esc(LBL[k]||k)}</td><td><input data-r="${v}.${k}.0" value="${sp[0]==null?'':sp[0]}" placeholder="rata-rata pribadi"></td><td><input data-r="${v}.${k}.1" value="${sp[1]}"></td><td><input data-r="${v}.${k}.2" value="${sp[2]==null?1:sp[2]}"></td></tr>`})});
+ $('#reftable').innerHTML=h+'</table>'}
+$('#refsave').onclick=async()=>{const ref={};$$('#reftable input').forEach(i=>{const [v,k,idx]=i.dataset.r.split('.');ref[v]=ref[v]||{};ref[v][k]=ref[v][k]||[null,0.1,1];const x=i.value.trim();ref[v][k][+idx]=x===''?null:parseFloat(x)});
+ const r=await api('/api/settings',{reference:ref});toast(r.ok?'Acuan tersimpan ✔':'Gagal','ok')};
+$('#refclear').onclick=async()=>{await api('/api/action/clear_reference',{});toast('Acuan dari tembakan dihapus','ok');poll()};
+
+/* ---------- riwayat ---------- */
+async function loadHist(){const l=await api('/api/sessions');$('#hist').innerHTML=l.length?l.map(s=>{const d=s.id.replace(/(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})/,'$3/$2/$1 $4:$5');return `<div class="it"><b>${d}</b><span>${s.n??0} tembakan</span><span class="badge ${fcls(s.form_avg)}">Form ${fmt(s.form_avg)}</span><span>Skor panah ${s.arrow_n?s.arrow_total:'–'}</span><div class="sp"></div><a href="/sessions/${s.id}/report.html" target="_blank">📄 Laporan</a><a href="/sessions/${s.id}/shots.csv">⬇ CSV</a><a href="/sessions/${s.id}/summary.txt" target="_blank">Ringkasan</a></div>`}).join(''):'<p style="color:var(--mu)">Belum ada sesi tersimpan.</p>'}
+
+
+/* ---------- skor manual / eksternal ---------- */
+let mKey='';
+function renderManual(shots){
+ const rings=S.target.rings,hm=S.target.scoring==='hit_miss';
+ $('#msrc').textContent='sumber skor: '+(S.target.source==='manual'?'manual / sensor':'kamera target (boleh dikoreksi manual)');
+ const arrows=shots.filter(s=>s.arrow&&s.arrow.dx_rel!=null).map(s=>s.arrow);
+ $('#mplot').innerHTML=targetPlot(arrows,rings,S.target.scoring,null,240);
+ const key=JSON.stringify([shots.map(s=>[s.no,s.arrow&&s.arrow.score]),rings,hm]);
+ if(key===mKey)return;mKey=key;
+ const sel=$('#mshot'),old=sel.value;
+ sel.innerHTML='<option value="">Otomatis: tembakan berikutnya tanpa skor</option>'+shots.map(s=>`<option value="${s.no}">#${s.no}${s.arrow?' (skor '+s.arrow.score+', ganti)':''}</option>`).join('');
+ sel.value=[...sel.options].some(o=>o.value===old)?old:'';
+ const vals=hm?[[1,'Kena'],[0,'Meleset']]:Array.from({length:rings},(_,i)=>[rings-i,rings-i]).concat([[0,'M']]);
+ $('#mbtns').innerHTML=vals.map(([v,l])=>`<button class="b" data-sc="${v}">${l}</button>`).join('')}
+async function sendScore(body){body.source='manual';const n=$('#mshot').value;if(n)body.shot=+n;const r=await api('/api/score',body);
+ if(r.ok){toast(`Skor tersimpan untuk tembakan #${r.shot} ✔`,'ok');mKey='';poll()}else toast(esc(r.error),'error')}
+$('#mbtns').addEventListener('click',e=>{const b=e.target.closest('[data-sc]');if(b)sendScore({score:+b.dataset.sc})});
+$('#mplot').addEventListener('click',e=>{const svg=e.target.closest('svg');if(!svg)return;const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(svg.getScreenCTM().inverse());sendScore({x:+(q.x/100).toFixed(3),y:+(q.y/100).toFixed(3)})});
+$('#f_source').onchange=async()=>{await api('/api/settings',{target:{source:$('#f_source').value}});toast('Sumber skor disimpan ✔ (berlaku saat sesi dimulai)','ok')};
+
+/* ---------- poll & SSE ---------- */
+async function poll(){try{S=await api('/api/state');if(!formsReady){if(!$('#camforms').children.length)buildForms();fillForms()}render()}catch(e){$('#conn').className='dot';$('#engtxt').textContent='Server tidak terhubung'}}
+/* ---------- analisa rekaman ---------- */
+const RC=[['depan','🧍 Depan'],['samping','↔️ Samping'],['target','🎯 Target']];
+function buildRec(){$('#r_rows').innerHTML=RC.map(([c,l],i)=>`<div class="rrow"><b>${l}</b><input type="file" accept="video/*,.mp4,.avi,.mov,.mkv" id="rf_${c}"><div></div><input id="rp_${c}" placeholder="atau lokasi file, mis. D:\\video\\${c}.mp4"><div class="rs" id="rs_${c}"></div>${i?`<div class="ro">Offset <input type="number" id="ro_${c}" value="0" step="0.1" style="width:80px;padding:4px 8px"> dtk (positif = rekaman ini mulai lebih lambat dari rekaman utama)</div>`:''}</div>`).join('')}
+function upload(cam,file){return new Promise(res=>{const x=new XMLHttpRequest();x.open('POST','/api/upload/'+cam);x.upload.onprogress=e=>{if(e.lengthComputable)$('#rs_'+cam).textContent='Mengunggah '+Math.round(100*e.loaded/e.total)+'%'};
+ x.onload=()=>{try{res(JSON.parse(x.responseText))}catch(e){res({ok:false,error:'Respon tidak valid'})}};x.onerror=()=>res({ok:false,error:'Unggah gagal'});const fd=new FormData();fd.append('file',file);x.send(fd)})}
+$('#r_go').onclick=async()=>{const b=$('#r_go');b.disabled=true;try{const cams={},offsets={};
+ for(const [c] of RC){const f=$('#rf_'+c).files[0],p=$('#rp_'+c).value.trim();
+  if(f){$('#rs_'+c).textContent='Mengunggah…';const r=await upload(c,f);if(!r.ok){toast('⚠️ '+esc(r.error||'Unggah gagal'),'error');b.disabled=false;return}cams[c]=r.path;$('#rs_'+c).textContent='✔ '+r.name+' ('+Math.round(r.size/1048576)+' MB)'}
+  else if(p){cams[c]=p;$('#rs_'+c).textContent=''}
+  const o=$('#ro_'+c);if(o)offsets[c]=+o.value||0}
+ if(!Object.keys(cams).length){toast('Pilih minimal satu rekaman','error');b.disabled=false;return}
+ const r=await api('/api/analyze',{mode:$('#r_mode').value,cams,offsets,match:$('#r_match').value,skip:+$('#r_skip').value,realtime:$('#r_rt').checked});
+ if(r.ok===false)toast('⚠️ '+esc(r.error),'error');else toast('Analisa rekaman dimulai…','ok');setTimeout(poll,500)}finally{b.disabled=false}};
+$('#r_live').onclick=()=>showTab('live');$('#r_view').onclick=()=>showTab('hasil');
+buildRec();
+setInterval(poll,1000);poll();
+const es=new EventSource('/api/stream');
+es.onmessage=m=>{const e=JSON.parse(m.data);
+ if(e.type==='error')toast('⚠️ '+esc(e.message),'error');
+ else if(e.type==='info')toast(esc(e.message));
+ else if(e.type==='cancel')toast('Tarikan dibatalkan: '+esc(e.message));
+ else if(e.type==='release')toast(`🏹 Tembakan #${e.no} dilepas`,'ok');
+ else if(e.type==='form')toast(`Tembakan #${e.no}: form <b>${e.form==null?'–':Math.round(e.form)}</b>/100`,'ok');
+ else if(e.type==='arrow')toast(e.score==null?`Tembakan #${e.no}: panah tidak terdeteksi`:`🎯 Tembakan #${e.no}: skor <b>${e.score}</b>`,'ok');
+ else if(e.type==='report')toast(`📄 Laporan sesi tersimpan (<a style="color:var(--a1)" href="/sessions/${e.path}/report.html" target="_blank">buka</a>)`,'ok');
+ if(['engine','release','form','arrow','shot','report'].includes(e.type))poll().then(()=>{if(e.type==='report'&&S&&S.offline)showTab('hasil')})};
+</script>
+</body>
+</html>
